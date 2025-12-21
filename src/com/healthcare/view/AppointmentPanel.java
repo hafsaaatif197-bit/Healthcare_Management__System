@@ -6,50 +6,52 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.util.List;
 
-/**
- * Panel for Appointment management (CRUD operations)
- * Standardized to match the professional Dashboard theme.
- */
 public class AppointmentPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
     private DefaultTableModel tableModel;
+    
+    // Fields matching your Model's 13 attributes
     private JTextField appointmentIDField, patientIDField, clinicianIDField, facilityIDField;
     private JTextField dateField, timeField, durationField, typeField, statusField;
-    private JTextArea reasonArea, notesArea;
+    private JTextField reasonField, notesField, createdDateField, modifiedField;
+
+    private final Color NAVY_PRIMARY = new Color(40, 53, 147);
+    private final Color SLATE_BG = new Color(245, 247, 250);
 
     public AppointmentPanel(HealthcareController controller) {
         this.controller = controller;
         initializePanel();
+        refreshData();
     }
 
     private void initializePanel() {
         setLayout(new BorderLayout(15, 15));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setBackground(new Color(245, 247, 250)); // Slate background
+        setBackground(SLATE_BG);
 
-        // Table setup
-        String[] columns = {"Appt ID", "Patient ID", "Clinician ID", "Facility ID", "Date", "Time", "Duration", "Type", "Status"};
+        add(createButtonPanel(), BorderLayout.NORTH);
+
+        // Columns matching your Model
+        String[] columns = {
+            "ID", "Patient", "Clinician", "Facility", "Date", "Time", 
+            "Duration", "Type", "Status", "Reason", "Notes"
+        };
+        
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
-        
-        table = new JTable(tableModel);
-        table.setFillsViewportHeight(true);
-        table.setRowHeight(28);
-        table.setShowGrid(true);
-        table.setGridColor(new Color(230, 230, 230));
-        table.setSelectionBackground(new Color(232, 240, 254));
-        table.setSelectionForeground(Color.BLACK);
 
-        // Header Styling
+        table = new JTable(tableModel);
+        table.setRowHeight(28);
+        table.setSelectionBackground(new Color(232, 240, 254));
+        
         JTableHeader header = table.getTableHeader();
-        header.setBackground(new Color(40, 53, 147)); // Professional Navy
+        header.setBackground(NAVY_PRIMARY);
         header.setForeground(Color.WHITE);
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) loadSelectedAppointment();
@@ -59,116 +61,131 @@ public class AppointmentPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Appointment Schedule"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // Form panel
-        JPanel formPanel = createFormPanel();
-        formPanel.setPreferredSize(new Dimension(0, 300)); // Standardized size
-        add(formPanel, BorderLayout.SOUTH);
-
-        // Button panel
-        JPanel buttonPanel = createButtonPanel();
-        add(buttonPanel, BorderLayout.NORTH);
+        add(createFormPanel(), BorderLayout.SOUTH);
     }
 
     private JPanel createFormPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(210, 210, 210)),
-            BorderFactory.createEmptyBorder(15, 15, 15, 15)
-        ));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
-        gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
         // Row 1
-        gbc.gridy = 0; gbc.gridx = 0; panel.add(new JLabel("Appointment ID:"), gbc);
-        gbc.gridx = 1; panel.add(appointmentIDField = new JTextField(12), gbc);
-        gbc.gridx = 2; panel.add(new JLabel("Patient ID:"), gbc);
-        gbc.gridx = 3; panel.add(patientIDField = new JTextField(12), gbc);
-        gbc.gridx = 4; panel.add(new JLabel("Clinician ID:"), gbc);
-        gbc.gridx = 5; panel.add(clinicianIDField = new JTextField(12), gbc);
+        addFormField(panel, gbc, 0, 0, "Appt ID:", appointmentIDField = new JTextField());
+        addFormField(panel, gbc, 0, 2, "Patient ID:", patientIDField = new JTextField());
+        addFormField(panel, gbc, 0, 4, "Clinician ID:", clinicianIDField = new JTextField());
 
         // Row 2
-        gbc.gridy = 1; gbc.gridx = 0; panel.add(new JLabel("Date:"), gbc);
-        gbc.gridx = 1; panel.add(dateField = new JTextField(12), gbc);
-        gbc.gridx = 2; panel.add(new JLabel("Time:"), gbc);
-        gbc.gridx = 3; panel.add(timeField = new JTextField(12), gbc);
-        gbc.gridx = 4; panel.add(new JLabel("Status:"), gbc);
-        gbc.gridx = 5; panel.add(statusField = new JTextField(12), gbc);
+        addFormField(panel, gbc, 1, 0, "Facility ID:", facilityIDField = new JTextField());
+        addFormField(panel, gbc, 1, 2, "Date:", dateField = new JTextField());
+        addFormField(panel, gbc, 1, 4, "Time:", timeField = new JTextField());
 
-        // Row 3 (Reason & Notes)
-        gbc.gridy = 2; gbc.gridx = 0; panel.add(new JLabel("Reason:"), gbc);
-        gbc.gridx = 1; gbc.gridwidth = 2; 
-        reasonArea = new JTextArea(3, 20);
-        reasonArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        panel.add(new JScrollPane(reasonArea), gbc);
-        
-        gbc.gridx = 3; gbc.gridwidth = 1; panel.add(new JLabel("Notes:"), gbc);
-        gbc.gridx = 4; gbc.gridwidth = 2;
-        notesArea = new JTextArea(3, 20);
-        notesArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        panel.add(new JScrollPane(notesArea), gbc);
+        // Row 3
+        addFormField(panel, gbc, 2, 0, "Duration:", durationField = new JTextField());
+        addFormField(panel, gbc, 2, 2, "Type:", typeField = new JTextField());
+        addFormField(panel, gbc, 2, 4, "Status:", statusField = new JTextField());
+
+        // Row 4
+        addFormField(panel, gbc, 3, 0, "Reason:", reasonField = new JTextField());
+        addFormField(panel, gbc, 3, 2, "Notes:", notesField = new JTextField());
+        addFormField(panel, gbc, 3, 4, "Created:", createdDateField = new JTextField());
 
         return panel;
     }
 
-    private JPanel createButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
-        panel.setOpaque(false);
+    private void addFormField(JPanel p, GridBagConstraints gbc, int row, int col, String label, JTextField tf) {
+        gbc.gridy = row; gbc.gridx = col; p.add(new JLabel(label), gbc);
+        gbc.gridx = col + 1; p.add(tf, gbc);
+    }
 
-        JButton addBtn = styleButton(new JButton("Schedule Appointment"), new Color(33, 150, 243));
+    private JPanel createButtonPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setOpaque(false);
+        
+        JButton addBtn = styleButton(new JButton("Book Appointment"), new Color(33, 150, 243));
         addBtn.addActionListener(e -> addAppointment());
 
         JButton updateBtn = styleButton(new JButton("Update"), new Color(76, 175, 80));
         updateBtn.addActionListener(e -> updateAppointment());
 
-        JButton deleteBtn = styleButton(new JButton("Cancel Appointment"), new Color(211, 47, 47));
+        JButton deleteBtn = styleButton(new JButton("Cancel"), new Color(211, 47, 47));
         deleteBtn.addActionListener(e -> deleteAppointment());
 
-        panel.add(addBtn);
-        panel.add(updateBtn);
-        panel.add(deleteBtn);
+        panel.add(addBtn); panel.add(updateBtn); panel.add(deleteBtn);
         return panel;
     }
 
-    private JButton styleButton(JButton btn, Color bg) {
-        btn.setBackground(bg);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        return btn;
+    private JButton styleButton(JButton b, Color bg) {
+        b.setBackground(bg); b.setForeground(Color.WHITE);
+        b.setFocusPainted(false); b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return b;
     }
 
     private void loadSelectedAppointment() {
-        int row = table.getSelectedRow();
-        if (row >= 0) {
-            appointmentIDField.setText((String) tableModel.getValueAt(row, 0));
-            patientIDField.setText((String) tableModel.getValueAt(row, 1));
-            clinicianIDField.setText((String) tableModel.getValueAt(row, 2));
-            dateField.setText((String) tableModel.getValueAt(row, 4));
-            timeField.setText((String) tableModel.getValueAt(row, 5));
-            statusField.setText((String) tableModel.getValueAt(row, 8));
+        int r = table.getSelectedRow();
+        if (r >= 0) {
+            appointmentIDField.setText((String) tableModel.getValueAt(r, 0));
+            patientIDField.setText((String) tableModel.getValueAt(r, 1));
+            clinicianIDField.setText((String) tableModel.getValueAt(r, 2));
+            facilityIDField.setText((String) tableModel.getValueAt(r, 3));
+            dateField.setText((String) tableModel.getValueAt(r, 4));
+            timeField.setText((String) tableModel.getValueAt(r, 5));
+            durationField.setText((String) tableModel.getValueAt(r, 6));
+            typeField.setText((String) tableModel.getValueAt(r, 7));
+            statusField.setText((String) tableModel.getValueAt(r, 8));
+            reasonField.setText((String) tableModel.getValueAt(r, 9));
+            notesField.setText((String) tableModel.getValueAt(r, 10));
         }
+    }
+
+    private void addAppointment() {
+        Appointment a = createFromForm();
+        if (a != null) {
+            controller.addAppointment(a);
+            refreshData();
+        }
+    }
+
+    private void updateAppointment() {
+        int r = table.getSelectedRow();
+        if (r >= 0) {
+            controller.deleteAppointment((String) tableModel.getValueAt(r, 0));
+            controller.addAppointment(createFromForm());
+            refreshData();
+        }
+    }
+
+    private void deleteAppointment() {
+        int r = table.getSelectedRow();
+        if (r >= 0) {
+            controller.deleteAppointment((String) tableModel.getValueAt(r, 0));
+            refreshData();
+        }
+    }
+
+    private Appointment createFromForm() {
+        // Calling your 13-parameter constructor EXACTLY
+        return new Appointment(
+            appointmentIDField.getText(), patientIDField.getText(), clinicianIDField.getText(),
+            facilityIDField.getText(), dateField.getText(), timeField.getText(),
+            durationField.getText(), typeField.getText(), statusField.getText(),
+            reasonField.getText(), notesField.getText(), createdDateField.getText(), ""
+        );
     }
 
     public void refreshData() {
         tableModel.setRowCount(0);
-        List<Appointment> appointments = controller.getAllAppointments();
-        for (Appointment appt : appointments) {
+        for (Appointment a : controller.getAllAppointments()) {
+            // Using your Model's EXACT getter names
             tableModel.addRow(new Object[]{
-                appt.getAppointmentID(), appt.getPatientID(), appt.getClinicianID(),
-                appt.getFacilityID(), appt.getDate(), appt.getTime(), 
-                appt.getDurationMinutes(), appt.getAppointmentType(), appt.getStatus()
+                a.getAppointmentID(), a.getPatientID(), a.getClinicianID(), a.getFacilityID(),
+                a.getDate(), a.getTime(), a.getDurationMinutes(), a.getAppointmentType(),
+                a.getStatus(), a.getReason(), a.getNotes()
             });
         }
     }
-
-    // CRUD Methods (Logic remains unchanged)
-    private void addAppointment() { /* Existing logic */ }
-    private void updateAppointment() { /* Existing logic */ }
-    private void deleteAppointment() { /* Existing logic */ }
 }
