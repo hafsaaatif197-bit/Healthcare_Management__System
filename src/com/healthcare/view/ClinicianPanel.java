@@ -9,7 +9,6 @@ import java.awt.*;
 
 /**
  * Clinician Management Panel
- * Navy Enterprise Theme - All 12 Original Fields Preserved
  */
 public class ClinicianPanel extends JPanel {
     private HealthcareController controller;
@@ -36,10 +35,10 @@ public class ClinicianPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(SLATE_BG);
 
-        // 1. TOP ACTION BAR
+        
         add(createButtonPanel(), BorderLayout.NORTH);
 
-        // 2. CENTER TABLE - ALL 12 COLUMNS RESTORED
+        
         String[] columns = {
             "Clinician ID", "First Name", "Last Name", "Qualification", 
             "Specialty", "GMC Number", "Workplace", "Type", 
@@ -57,7 +56,7 @@ public class ClinicianPanel extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
 
-        // Styling the Navy Header
+       
         JTableHeader header = table.getTableHeader();
         header.setBackground(NAVY_PRIMARY);
         header.setForeground(Color.WHITE);
@@ -72,7 +71,7 @@ public class ClinicianPanel extends JPanel {
         scrollPane.getViewport().setBackground(Color.WHITE);
         add(scrollPane, BorderLayout.CENTER);
 
-        // 3. BOTTOM FORM - ORGANIZED GRID
+        
         add(createFormPanel(), BorderLayout.SOUTH);
     }
 
@@ -156,7 +155,7 @@ public class ClinicianPanel extends JPanel {
         return btn;
     }
 
-    // --- LOGIC ---
+    
 
     private void loadSelectedClinician() {
         int r = table.getSelectedRow();

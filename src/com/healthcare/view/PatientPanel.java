@@ -16,7 +16,7 @@ public class PatientPanel extends JPanel {
     private JTextField nhsNumberField, emailField, phoneField, addressField, postcodeField;
     private JTextField emergencyContactNameField, emergencyContactPhoneField, registrationDateField, gpSurgeryField;
 
-    // Standardized Navy Colors
+    
     private final Color NAVY_PRIMARY = new Color(40, 53, 147);
     private final Color SLATE_BG = new Color(245, 247, 250);
 
@@ -31,7 +31,7 @@ public class PatientPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setBackground(SLATE_BG);
 
-        // 1. FULL COLUMNS RESTORED
+       
         String[] columns = {"Patient ID", "First Name", "Last Name", "DOB", "Gender",
                           "NHS Number", "Email", "Phone", "Address", "Postcode",
                           "Emergency Contact", "Emergency Phone", "Registration Date", "GP Surgery"};
@@ -48,7 +48,7 @@ public class PatientPanel extends JPanel {
         table.setGridColor(new Color(230, 230, 230));
         table.setSelectionBackground(new Color(227, 242, 253));
         
-        // 2. NAVY TABLE HEADER
+       
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
         header.setBackground(NAVY_PRIMARY);
@@ -63,10 +63,10 @@ public class PatientPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createTitledBorder("Patient Registry"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // 3. FULL FORM RESTORED (Layout exactly as original)
+        
         add(createFormPanel(), BorderLayout.SOUTH);
 
-        // 4. TOP ACTION BAR
+        
         add(createButtonPanel(), BorderLayout.NORTH);
     }
 
@@ -152,8 +152,7 @@ public class PatientPanel extends JPanel {
         return btn;
     }
 
-    // --- RESTORED LOGIC ---
-
+    
     private void loadSelectedPatient() {
         int r = table.getSelectedRow();
         if (r >= 0) {

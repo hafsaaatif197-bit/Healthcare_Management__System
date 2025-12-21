@@ -27,7 +27,7 @@ public class MainView extends JFrame {
         setSize(1300, 850);
         setLocationRelativeTo(null);
 
-        // Modern Professional Theme Colors
+        
         Color primaryNavy = new Color(40, 53, 147);
         Color backgroundSlate = new Color(240, 242, 245);
 
@@ -47,7 +47,7 @@ public class MainView extends JFrame {
 
         createMenuBar();
 
-        // Styled Tabbed Pane
+       
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tabbedPane.setBackground(Color.WHITE);
@@ -71,7 +71,7 @@ public class MainView extends JFrame {
 
         add(tabbedPane, BorderLayout.CENTER);
 
-        // Footer / Status Bar
+        
         JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         statusBar.setBackground(Color.WHITE);
         statusBar.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(220, 220, 220)));

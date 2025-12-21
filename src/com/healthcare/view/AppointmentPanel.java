@@ -33,7 +33,7 @@ public class AppointmentPanel extends JPanel {
 
         add(createButtonPanel(), BorderLayout.NORTH);
 
-        // Columns matching your Model
+        
         String[] columns = {
             "ID", "Patient", "Clinician", "Facility", "Date", "Time", 
             "Duration", "Type", "Status", "Reason", "Notes"
@@ -168,7 +168,7 @@ public class AppointmentPanel extends JPanel {
     }
 
     private Appointment createFromForm() {
-        // Calling your 13-parameter constructor EXACTLY
+        
         return new Appointment(
             appointmentIDField.getText(), patientIDField.getText(), clinicianIDField.getText(),
             facilityIDField.getText(), dateField.getText(), timeField.getText(),
@@ -180,7 +180,7 @@ public class AppointmentPanel extends JPanel {
     public void refreshData() {
         tableModel.setRowCount(0);
         for (Appointment a : controller.getAllAppointments()) {
-            // Using your Model's EXACT getter names
+            
             tableModel.addRow(new Object[]{
                 a.getAppointmentID(), a.getPatientID(), a.getClinicianID(), a.getFacilityID(),
                 a.getDate(), a.getTime(), a.getDurationMinutes(), a.getAppointmentType(),
