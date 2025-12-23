@@ -7,20 +7,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-/**
- * Prescription Management Panel
- */
+
 public class PrescriptionPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
     private DefaultTableModel tableModel;
     
-    // Original fields preserved
+    
     private JTextField prescriptionIDField, patientIDField, clinicianIDField, appointmentIDField, medicationField;
     private JTextField dosageField, frequencyField, durationDaysField, quantityField, pharmacyField;
     private JTextField datePrescribedField, issueDateField, collectionDateField, collectionStatusField, notesField;
 
-    // Standard Navy Palette
+    
     private final Color NAVY_PRIMARY = new Color(40, 53, 147);
     private final Color SLATE_BG = new Color(245, 247, 250);
 
@@ -56,7 +54,7 @@ public class PrescriptionPanel extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
 
-        // Styling the Navy Header
+        
         JTableHeader header = table.getTableHeader();
         header.setBackground(NAVY_PRIMARY);
         header.setForeground(Color.WHITE);

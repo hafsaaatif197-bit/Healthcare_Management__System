@@ -8,10 +8,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.File;
 
-/**
- * Referral Management Panel - 16 Fields Restored
- * Professional Navy Theme with Optimized Grid Layout
- */
+
+
 public class ReferralPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
@@ -38,10 +36,10 @@ public class ReferralPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setBackground(SLATE_BG);
 
-        // 1. TOP ACTION BAR
+        
         add(createButtonPanel(), BorderLayout.NORTH);
 
-        // 2. CENTER TABLE - ALL 16 COLUMNS RESTORED
+        
         String[] columns = {
             "Referral ID", "Patient ID", "Ref Clinician", "Rec Clinician",
             "Ref Facility", "Rec Facility", "Date", "Urgency", "Reason",
@@ -59,7 +57,7 @@ public class ReferralPanel extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
 
-        // Styling the Navy Header
+        
         JTableHeader header = table.getTableHeader();
         header.setBackground(NAVY_PRIMARY);
         header.setForeground(Color.WHITE);
@@ -74,7 +72,7 @@ public class ReferralPanel extends JPanel {
         scrollPane.getViewport().setBackground(Color.WHITE);
         add(scrollPane, BorderLayout.CENTER);
 
-        // 3. BOTTOM FORM - 4-COLUMN OPTIMIZED GRID
+        
         add(createFormPanel(), BorderLayout.SOUTH);
     }
 

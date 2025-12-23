@@ -12,7 +12,7 @@ public class AppointmentPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     
-    // Fields matching your Model's 13 attributes
+    
     private JTextField appointmentIDField, patientIDField, clinicianIDField, facilityIDField;
     private JTextField dateField, timeField, durationField, typeField, statusField;
     private JTextField reasonField, notesField, createdDateField, modifiedField;

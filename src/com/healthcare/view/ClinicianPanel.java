@@ -7,9 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-/**
- * Clinician Management Panel
- */
+
 public class ClinicianPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;

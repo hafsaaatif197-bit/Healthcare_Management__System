@@ -7,10 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-/**
- * Facility Management Panel
- * Navy Enterprise Theme - All 11 Original Fields Preserved
- */
+
 public class FacilityPanel extends JPanel {
     private HealthcareController controller;
     private JTable table;
