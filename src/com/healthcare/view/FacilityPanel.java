@@ -13,11 +13,11 @@ public class FacilityPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     
-    // Original fields preserved
+    
     private JTextField facilityIDField, nameField, typeField, addressField, postcodeField;
     private JTextField phoneField, emailField, openingHoursField, managerField, servicesField, capacityField;
 
-    // Standard Navy Palette
+    
     private final Color NAVY_PRIMARY = new Color(40, 53, 147);
     private final Color SLATE_BG = new Color(245, 247, 250);
 
@@ -32,10 +32,10 @@ public class FacilityPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(SLATE_BG);
 
-        // 1. TOP ACTION BAR
+        
         add(createButtonPanel(), BorderLayout.NORTH);
 
-        // 2. CENTER TABLE - ALL COLUMNS RESTORED
+        
         String[] columns = {
             "Facility ID", "Name", "Type", "Address", "Postcode", 
             "Phone", "Email", "Opening Hours", "Manager", "Services", "Capacity"
